@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Title III Program Staff Survey - Year 2 Reflection">
+    <title>Title III Program Staff Survey - Year 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Bree Serif', serif;
+            background: linear-gradient(135deg, #00386C 0%, #1172DE 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #00386C 0%, #1172DE 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+        
+        .intro {
+            background: #DCD7D2;
+            padding: 20px;
+            border-bottom: 3px solid #FFC333;
+        }
+        
+        .intro p {
+            line-height: 1.6;
+            color: #00386C;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .intro .time-estimate {
+            display: inline-block;
+            background: #FFC333;
+            color: #00386C;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 15px;
+            border: 2px solid #DCD7D2;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .question-header {
+            background: #00386C;
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .question-header:hover {
+            background: #1172DE;
+        }
+        
+        .question-header.active {
+            background: #1172DE;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background: #FFC333;
+            color: #00386C;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+        
+        .question-title {
+            font-size: 18px;
+            font-weight: 700;
+            flex: 1;
+        }
+        
+        .toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .question-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .question-content {
+            padding: 20px;
+            display: none;
+        }
+        
+        .question-content.active {
+            display: block;
+        }
+        
+        .question-part {
+            margin-bottom: 18px;
+        }
+        
+        .question-part:last-child {
+            margin-bottom: 0;
+        }
+        
+        .part-label {
+            font-weight: 700;
+            color: #00386C;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .sub-question {
+            margin-bottom: 12px;
+        }
+        
+        .sub-question-label {
+            font-weight: 700;
+            color: #716E6B;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 14px;
+        }
+        
+        .radio-group, .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f7f7f7;
+            border: 2px solid #DCD7D2;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-option:hover, .checkbox-option:hover {
+            background: #FFD749;
+            border-color: #FFC333;
+        }
+        
+        .radio-option.checked,
+        .checkbox-option.checked {
+            background: #FFD749;
+            border-color: #FFC333;
+        }
+        
+        .radio-option.checked label,
+        .checkbox-option.checked label {
+            color: #00386C;
+            font-weight: 700;
+        }
+        
+        .radio-option input[type="radio"],
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #00386C;
+        }
+        
+        .radio-option label,
+        .checkbox-option label {
+            cursor: pointer;
+            flex: 1;
+            color: #00386C;
+            font-size: 14px;
+        }
+        
+        .text-input, .textarea-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #DCD7D2;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Bree Serif', serif;
+            transition: border-color 0.3s ease;
+            margin-top: 8px;
+            color: #00386C;
+        }
+        
+        .text-input:focus, .textarea-input:focus {
+            outline: none;
+            border-color: #FFC333;
+            box-shadow: 0 0 0 3px rgba(255, 195, 51, 0.2);
+        }
+        
+        .textarea-input {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .optional-label {
+            font-size: 13px;
+            color: #716E6B;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+        
+        .required-label {
+            font-size: 13px;
+            color: #D34727;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .helper-text {
+            font-size: 13px;
+            color: #716E6B;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+        
+        .helper-list {
+            margin-top: 8px;
+            padding-left: 25px;
+        }
+        
+        .helper-list li {
+            margin-bottom: 4px;
+            color: #716E6B;
+            font-size: 13px;
+        }
+        
+        .background-section {
+            background: #DCD7D2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #00386C;
+        }
+        
+        .background-section h3 {
+            color: #00386C;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .submit-section {
+            text-align: center;
+            padding: 25px 20px;
+            background: #DCD7D2;
+            border-top: 3px solid #FFC333;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #00386C 0%, #1172DE 100%);
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Bree Serif', serif;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 56, 108, 0.4);
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 56, 108, 0.6);
+            background: linear-gradient(135deg, #1172DE 0%, #3092EF 100%);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #716E6B;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .question-title {
+                font-size: 16px;
+            }
+            
+            .radio-group, .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-header {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Title III Program Staff Survey</h1>
+            <div class="subtitle">Year 2 Reflection (2023-2024)</div>
+        </div>
+        
+        <div class="intro">
+            <p>Thank you for your commitment to the Title III program and our students. This brief anonymous survey seeks your honest feedback about Year 2 (2023-2024) implementation. Your insights will help us understand what's working, identify challenges, and improve support for first-year students moving forward.</p>
+            <span class="time-estimate">⏱️ Estimated time: 10-15 minutes</span>
+        </div>
+        
+        <div class="content">
+            <!-- Question 1 -->
+            <div class="question-block">
+                <div class="question-header" onclick="toggleQuestion(1)">
+                    <div style="display: flex; align-items: center;">
+                        <span class="question-number">Q1</span>
+                        <h2 class="question-title">Effectiveness in Your Title III Role</h2>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="question-content" id="q1-content">
+                    <div class="question-part">
+                        <div class="part-label">How effective did you feel in carrying out your Title III program responsibilities during Year 2?</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="q1-5" name="q1" value="5">
+                                <label for="q1-5">Extremely effective</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q1-4" name="q1" value="4">
+                                <label for="q1-4">Very effective</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q1-3" name="q1" value="3">
+                                <label for="q1-3">Moderately effective</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q1-2" name="q1" value="2">
+                                <label for="q1-2">Slightly effective</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q1-1" name="q1" value="1">
+                                <label for="q1-1">Not effective at all</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-part">
+                        <div class="optional-label">Optional: What factors most contributed to your effectiveness (or challenges to your effectiveness)?</div>
+                        <textarea class="textarea-input" name="q1-optional" placeholder="Share your thoughts here..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-block">
+                <div class="question-header" onclick="toggleQuestion(2)">
+                    <div style="display: flex; align-items: center;">
+                        <span class="question-number">Q2</span>
+                        <h2 class="question-title">Resources, Support, and Barriers</h2>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="question-content" id="q2-content">
+                    <div class="question-part">
+                        <div class="part-label">Part A: During Year 2, how would you rate the adequacy of the following for your Title III work?</div>
+                        
+                        <div class="sub-question">
+                            <span class="sub-question-label">Funding and materials:</span>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a1-5" name="q2a1" value="5">
+                                    <label for="q2a1-5">More than sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a1-4" name="q2a1" value="4">
+                                    <label for="q2a1-4">Sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a1-3" name="q2a1" value="3">
+                                    <label for="q2a1-3">Adequate</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a1-2" name="q2a1" value="2">
+                                    <label for="q2a1-2">Insufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a1-1" name="q2a1" value="1">
+                                    <label for="q2a1-1">Very insufficient</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sub-question">
+                            <span class="sub-question-label">Staffing levels:</span>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a2-5" name="q2a2" value="5">
+                                    <label for="q2a2-5">More than sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a2-4" name="q2a2" value="4">
+                                    <label for="q2a2-4">Sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a2-3" name="q2a2" value="3">
+                                    <label for="q2a2-3">Adequate</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a2-2" name="q2a2" value="2">
+                                    <label for="q2a2-2">Insufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a2-1" name="q2a2" value="1">
+                                    <label for="q2a2-1">Very insufficient</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sub-question">
+                            <span class="sub-question-label">Training and professional development:</span>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a3-5" name="q2a3" value="5">
+                                    <label for="q2a3-5">More than sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a3-4" name="q2a3" value="4">
+                                    <label for="q2a3-4">Sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a3-3" name="q2a3" value="3">
+                                    <label for="q2a3-3">Adequate</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a3-2" name="q2a3" value="2">
+                                    <label for="q2a3-2">Insufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a3-1" name="q2a3" value="1">
+                                    <label for="q2a3-1">Very insufficient</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sub-question">
+                            <span class="sub-question-label">Administrative support:</span>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a4-5" name="q2a4" value="5">
+                                    <label for="q2a4-5">More than sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a4-4" name="q2a4" value="4">
+                                    <label for="q2a4-4">Sufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a4-3" name="q2a4" value="3">
+                                    <label for="q2a4-3">Adequate</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a4-2" name="q2a4" value="2">
+                                    <label for="q2a4-2">Insufficient</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="q2a4-1" name="q2a4" value="1">
+                                    <label for="q2a4-1">Very insufficient</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-part">
+                        <div class="required-label">Part B: What was your most significant barrier in fulfilling your Title III responsibilities during Year 2? Please describe. *</div>
+                        <textarea class="textarea-input" name="q2b" placeholder="Please describe your most significant barrier..." required></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-block">
+                <div class="question-header" onclick="toggleQuestion(3)">
+                    <div style="display: flex; align-items: center;">
+                        <span class="question-number">Q3</span>
+                        <h2 class="question-title">Program Impact and Student Response</h2>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="question-content" id="q3-content">
+                    <div class="question-part">
+                        <div class="part-label">Part A: How clearly could you observe the impact of your Title III work on students during Year 2?</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="q3a-5" name="q3a" value="5">
+                                <label for="q3a-5">Very clearly. I saw direct evidence of impact</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q3a-4" name="q3a" value="4">
+                                <label for="q3a-4">Somewhat clearly</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q3a-3" name="q3a" value="3">
+                                <label for="q3a-3">Neutral / Unclear</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q3a-2" name="q3a" value="2">
+                                <label for="q3a-2">Not very clearly</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="q3a-1" name="q3a" value="1">
+                                <label for="q3a-1">Not at all clear</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-part">
+                        <div class="optional-label">Part B: What evidence of impact did you observe?</div>
+                        <div class="helper-text">This could include changes in student behavior, success, engagement, feedback you received, etc.</div>
+                        <textarea class="textarea-input" name="q3b" placeholder="Share the evidence of impact you observed..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-block">
+                <div class="question-header" onclick="toggleQuestion(4)">
+                    <div style="display: flex; align-items: center;">
+                        <span class="question-number">Q4</span>
+                        <h2 class="question-title">Challenges and Solutions</h2>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="question-content" id="q4-content">
+                    <div class="question-part">
+                        <div class="part-label">Part A: What challenges did you face in Year 2 that required you to make adjustments or find solutions? (Select all that apply)</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-1" name="q4a" value="1">
+                                <label for="q4a-1">Increased or complex student needs</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-2" name="q4a" value="2">
+                                <label for="q4a-2">Limited time to complete tasks</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-3" name="q4a" value="3">
+                                <label for="q4a-3">Insufficient staffing</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-4" name="q4a" value="4">
+                                <label for="q4a-4">Difficulty accessing resources or materials</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-5" name="q4a" value="5">
+                                <label for="q4a-5">Changes in procedures or expectations</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-6" name="q4a" value="6">
+                                <label for="q4a-6">Communication challenges within the Title III team</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-7" name="q4a" value="7">
+                                <label for="q4a-7">Communication or coordination with other campus departments</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-8" name="q4a" value="8">
+                                <label for="q4a-8">Low student participation or engagement</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-9" name="q4a" value="9">
+                                <label for="q4a-9">Technology or system limitations</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-10" name="q4a" value="10">
+                                <label for="q4a-10">Coordination between the three service areas (advising, money management, career prep)</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-11" name="q4a" value="11">
+                                <label for="q4a-11">Unclear expectations or guidelines</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="q4a-other" name="q4a" value="other">
+                                <label for="q4a-other">Other (please specify below)</label>
+                            </div>
+                        </div>
+                        <input type="text" class="text-input" name="q4a-other-text" placeholder="If other, please specify...">
+                    </div>
+                    
+                    <div class="question-part">
+                        <div class="required-label">Part B: Describe the most significant challenge you faced and any solutions or adjustments you developed to address it. *</div>
+                        <textarea class="textarea-input" name="q4b" placeholder="Please describe the challenge and your solutions..." required></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-block">
+                <div class="question-header" onclick="toggleQuestion(5)">
+                    <div style="display: flex; align-items: center;">
+                        <span class="question-number">Q5</span>
+                        <h2 class="question-title">Unintended Outcomes</h2>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="question-content" id="q5-content">
+                    <div class="question-part">
+                        <div class="part-label">What unintended outcomes (positive or negative) did you observe during Year 2 of Title III implementation?</div>
+                        <div class="helper-text">Think about:</div>
+                        <ul class="helper-list">
+                            <li>Unexpected benefits, successes, or positive surprises</li>
+                            <li>Surprising challenges or issues that emerged</li>
+                            <li>Effects on student behavior or engagement you didn't anticipate</li>
+                            <li>Impacts on team collaboration or campus partnerships</li>
+                            <li>Anything else that surprised you about the program</li>
+                        </ul>
+                        <textarea class="textarea-input" name="q5" placeholder="Share any unintended outcomes you observed..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question-block">
+                <div class="question-header" onclick="toggleQuestion(6)">
+                    <div style="display: flex; align-items: center;">
+                        <span class="question-number">Q6</span>
+                        <h2 class="question-title">Looking Forward: Recommendations for Year 3</h2>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="question-content" id="q6-content">
+                    <div class="question-part">
+                        <div class="part-label">What is working well and should continue as-is?</div>
+                        <textarea class="textarea-input" name="q6a" placeholder="Share what's working well..."></textarea>
+                    </div>
+                    
+                    <div class="question-part">
+                        <div class="part-label">What should change or be done differently?</div>
+                        <textarea class="textarea-input" name="q6b" placeholder="Share your suggestions for change..."></textarea>
+                    </div>
+                    
+                    <div class="question-part">
+                        <div class="part-label">What additional resources, support, or tools would most help you serve students better in Year 3?</div>
+                        <textarea class="textarea-input" name="q6c" placeholder="Share what additional support would help..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Background Section -->
+            <div class="background-section">
+                <h3>Background Information (Anonymous)</h3>
+                
+                <div class="question-part">
+                    <div class="part-label">Which Title III service area do you primarily work in?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="bg1-1" name="bg1" value="1">
+                            <label for="bg1-1">Academic Advising</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg1-2" name="bg1" value="2">
+                            <label for="bg1-2">Blue and Gold Money Management Center</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg1-3" name="bg1" value="3">
+                            <label for="bg1-3">Student Career Preparedness</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg1-4" name="bg1" value="4">
+                            <label for="bg1-4">Multiple areas / Cross-functional role</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg1-5" name="bg1" value="5">
+                            <label for="bg1-5">Other</label>
+                        </div>
+                    </div>
+                    <input type="text" class="text-input" name="bg1-other" placeholder="If other, please specify...">
+                </div>
+                
+                <div class="question-part">
+                    <div class="part-label">How long have you been working with the Title III program?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="bg2-1" name="bg2" value="1">
+                            <label for="bg2-1">Less than 6 months</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg2-2" name="bg2" value="2">
+                            <label for="bg2-2">6-12 months</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg2-3" name="bg2" value="3">
+                            <label for="bg2-3">1-2 years</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="bg2-4" name="bg2" value="4">
+                            <label for="bg2-4">More than 2 years</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="submit-section">
+            <button class="submit-button" onclick="handleSubmit()">Submit Survey</button>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Thank you for completing this survey!</strong></p>
+            <p>Your feedback is invaluable in strengthening the Title III program and our support for students.</p>
+        </div>
+    </div>
+    
+    <script>
+        function toggleQuestion(num) {
+            const header = event.currentTarget;
+            const content = document.getElementById(`q${num}-content`);
+            
+            header.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+        
+        function handleSubmit() {
+            alert('Thank you for your submission! In a production environment, this would submit your responses.');
+        }
+        
+        // Handle checked states for radio buttons and checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const radioOptions = document.querySelectorAll('.radio-option, .checkbox-option');
+            
+            radioOptions.forEach(option => {
+                const input = option.querySelector('input[type="radio"], input[type="checkbox"]');
+                
+                // Set initial state
+                if (input && input.checked) {
+                    option.classList.add('checked');
+                }
+                
+                // Update on change
+                if (input) {
+                    input.addEventListener('change', function() {
+                        if (input.type === 'radio') {
+                            // Remove checked class from all radio options in the same group
+                            const name = input.name;
+                            document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                                radio.closest('.radio-option')?.classList.remove('checked');
+                            });
+                        }
+                        
+                        if (input.checked) {
+                            option.classList.add('checked');
+                        } else {
+                            option.classList.remove('checked');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
